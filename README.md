@@ -55,6 +55,7 @@ It provides control over your network configuration, including IP address ranges
 ![Architecture Diagram](screenshots/bastion-host.png)
 
 
+4. Connect to the bastion host instance
 
 ```bash
 You can use the following command to connect to the bastion host instance using SSH:
@@ -65,7 +66,38 @@ scp -i /path/to/your-key.pem /path/to/local/file.txt username@ec2-public-ip:/pat
 
 ```
 
+5. Connect to the private instances
+
+```bash
+Once you are connected to the bastion host instance, you can use the following command to connect to the private instances using SSH:
+ssh -i /path/to/your-key.pem username@private-private-ip    
+```
+
+6. Test the setup
+- You can test the setup by accessing the private instances through the bastion host and verifying that they can reach the internet through the NAT Gateway.
+
+7. Create a Load Balancer
+- Create an Application Load Balancer (ALB) in the public subnet to distribute incoming traffic
+- Create a target group and register the private instances with the target group.
+
+![Architecture Diagram](screenshots/target-group-1.png)
+
+![Architecture Diagram](screenshots/target-group-2.png)
+
+- Create a listener for the ALB to listen on port 8000 (HTTP) and forward traffic to the target group.
+
+![Architecture Diagram](screenshots/load-balancer.png)
+
+- Go to Settings and open the security group for the load balancer and allow inbound traffic on port 8000 (HTTP).
+
+![Architecture Diagram](screenshots/inbound-rules.png)
 
 ## Lessons Learned
+- Understanding the components of a VPC and how they interact with each other.
+- Learning how to create and configure subnets, route tables, and internet gateways.
+- Gaining experience with security groups and NACLs to control inbound and outbound traffic.
+- Learning how to set up a bastion host for secure access to private instances.
+- Understanding how to create and configure an Auto Scaling Group to manage EC2 instances.
 
 ## Conclusion
+Setting up a VPC on AWS provides a secure and scalable environment for deploying applications. By following the steps outlined in this project, you can create a VPC with public and private subnets, configure routing and security, and deploy EC2 instances with load balancing and auto-scaling capabilities. This project serves as a foundation for building more complex architectures on AWS.
